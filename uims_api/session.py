@@ -25,12 +25,13 @@ ATTENDANCE_STATIC_EXTRA = "?type=etgkYfqBdH1fSfc255iYGw=="
 ERROR_HEAD = "Whoops, Something broke!"
 HEADERS = {"Content-Type": "application/json"}
 
-
+chromeDriverPath = 'Your Chrome Driver Path'
 options = Options()
 options.headless = True
-driver = webdriver.Chrome(options=options)
+driver = webdriver.Chrome(executable_path=chromeDriverPath, options=options)
 
 count = 0
+
 
 class SessionUIMS:
     def __init__(self, uid, password):
@@ -69,7 +70,6 @@ class SessionUIMS:
             except NoSuchElementException:
                 return False
             return True
-            
 
         def authenticator():
             global count
