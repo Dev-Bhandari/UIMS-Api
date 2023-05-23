@@ -11,6 +11,6 @@ This Api uses selenium and beutifulsoup for web scraping and pytesseract for OCR
 
 Use the command below to install the packages according to the configuration file requirements.txt.
 
-'''
+```
 pip install -r requirements.txt
-'''
+```
