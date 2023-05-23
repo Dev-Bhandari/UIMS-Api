@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import re
+import os
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
@@ -47,6 +48,12 @@ class SessionUIMS:
         self._session_id = None
         self._full_name = None
 
+    def __del__(self):
+        os.remove('uims_api/assets/ss'+self._uid+'.png')
+        os.remove('uims_api/assets/captcha'+self._uid+'.png')
+        os.remove('uims_api/assets/captcha_gray'+self._uid+'.png')
+        os.remove('uims_api/assets/captcha_thresholded'+self._uid+'.png')
+
     def _login(self):
 
         def check_by_id(id):
@@ -62,19 +69,20 @@ class SessionUIMS:
             except NoSuchElementException:
                 return False
             return True
+            
 
         def authenticator():
             global count
             count += 1
             driver.get(AUTHENTICATE_URL)
-
+            time.sleep(0.5)
             driver.find_element(By.ID, 'txtUserId').send_keys(self._uid)
             driver.find_element(By.ID, 'btnNext').click()
 
-            driver.save_screenshot('uims_api/assets/ss.png')
-            captcha = captchaSolver()
+            driver.save_screenshot('uims_api/assets/ss'+self._uid+'.png')
+            captcha = captchaSolver(self._uid)
             if (captcha == ''):
-                if (count < 4):
+                if (count < 6):
                     authenticator()
                 else:
                     raise IncorrectCaptcha(
@@ -90,7 +98,7 @@ class SessionUIMS:
                 error = driver.find_element(
                     By.XPATH, '//*[@id="login-page"]/div/div[2]/p').text
                 if (error == 'Invalid Captcha'):
-                    if (count < 4):
+                    if (count < 6):
                         authenticator()
                     else:
                         raise IncorrectCaptcha(
