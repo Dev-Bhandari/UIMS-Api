@@ -8,3 +8,9 @@ This is an api for UIMS (uims.cuchd.in) built using python.
 
 
 This Api uses selenium and beutifulsoup for web scraping and pytesseract for OCR (optical character recognition) in captcha.
+
+Use the command below to install the packages according to the configuration file requirements.txt.
+
+'''
+pip install -r requirements.txt
+'''
